@@ -16,11 +16,13 @@
 
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/hoverglow.css');
 
+
 /*
- * 修复：移除失效的 .childrenItemsContainer，确保网格布局生效
- * 目标选择器：.itemsContainer.padded-right.vertical-list
+ * EPISODE GRID LAYOUT FIX & COMPACT STYLE
+ * Fix: Removed defunct .childrenItemsContainer for grid layout compatibility.
  */
 
+/* 1. 核心网格布局：已修复选择器 */
 .itemsContainer.padded-right.vertical-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr; /* 默认 4 列布局 */
@@ -46,12 +48,12 @@
   }
 }
 
-/* 移动布局（注意：如果您的软件在桌面错误应用了 .layout-mobile，这会使其变回 1 列） */
+/* 移动布局（强制 1 列） */
 .layout-mobile .itemsContainer.padded-right.vertical-list {
   grid-template-columns: 1fr;
 }
 
-/* --- 其他通用样式（保持不变） --- */
+/* --- General List Item Styling --- */
 
 #itemDetailPage .listItem-content {
   border-radius: var(--rounding);
@@ -64,29 +66,28 @@
   -o-transition: background 0.15s ease-in-out;
 }
 
+/* 剧集封面图片样式和悬停效果 */
 .listItemImage.listItemImage-large {
   width: 100%;
   margin: 0;
+  transition: transform 0.3s ease-in-out; /* 添加平滑过渡 */
+}
+
+/* 剧集封面悬停放大效果 */
+.listItem:hover .listItemImage.listItemImage-large {
+  transform: scale(1.1); /* 鼠标悬停时放大 5% */
 }
 
 .listItem-overview.listItemBodyText {
-  height: 5.5em !important;
+  height: 5.5em !important; /* 限制简介高度 */
   font-size: 1em !important;
-}
-
-.layout-mobile .listItemImageButton-icon {
-  padding: 0;
-  top: 0.34em;
-  position: absolute !important;
-  font-size: 1.5em !important;
-  right: 3em;
 }
 
 #itemDetailPage .listItem {
   position: relative;
+  height: fit-content;
   height: -webkit-fit-content;
   height: -moz-fit-content;
-  height: fit-content;
   overflow: hidden;
   margin-bottom: 1.5rem;
   border-radius: var(--rounding);
@@ -105,6 +106,30 @@
   -moz-border-radius: var(--rounding) !important;
   -ms-border-radius: var(--rounding) !important;
   -o-border-radius: var(--rounding) !important;
+}
+
+.listItemImageButton {
+  margin: auto;
+  font-size: 1.6em !important;
+}
+.listItemBody.itemAction,
+.listItem-bottomoverview.secondary{
+  z-index: 1;
+}
+.listItem-bottomoverview.secondary{
+  text-align: justify;
+  padding: .5em;
+  margin: 0;
+}
+
+/* --- Mobile Specific Overrides (layout-mobile) --- */
+
+.layout-mobile .listItemImageButton-icon {
+  padding: 0;
+  top: 0.34em;
+  position: absolute !important;
+  font-size: 1.5em !important;
+  right: 3em;
 }
 
 .layout-mobile #itemDetailPage .listItemImageButton {
@@ -182,32 +207,47 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   align-items: flex-start;
-}
-
-.layout-mobile #itemDetailPage .listItem-content {
-  background: none !important;
+  background: none !important; /* Combined two rules */
   position: unset;
   color: white;
 }
 
-.listItemImageButton {
-  margin: auto;
-  font-size: 1.6em !important;
+/* --- Theme & Aesthetic Adjustments --- */
+
+/* Accent and rounding */
+:root {--accent: 98, 121, 205;}
+:root {--rounding: 12px;}
+
+/* FIX FOR UNSTABLE CLASS: Replaced .css-17c09up.Mui-selected with a more generic rule. */
+.emby-tab-button.Mui-selected { 
+  background-color: rgba(var(--accent), 0.2); 
 }
-.listItemBody.itemAction,
-.listItem-bottomoverview.secondary{
-  z-index: 1;
-}
-.listItem-bottomoverview.secondary{
-  text-align: justify;
-  padding: .5em;
-  margin: 0;
+.emby-tab-button.Mui-selected:hover { 
+  background-color: rgba(var(--accent), 0.7); 
 }
 
-/*Style backdrop*/
+/* Card Hover Effect: Combined identical redundant rules */
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    background-size: cover;
+    transition: .4s
+}
+
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard):hover .cardImageContainer::before {
+    transform: scale(1.1)
+}
+
+
+/* Style backdrop */
 .backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(30%);}
 
-/*Login background*/
+/* Login background */
 #loginPage {
   display: grid;
   background: url('/Branding/Splashscreen?format=jpg&foregroundLayer=0.15') !important;
@@ -222,42 +262,3 @@
 .trackSelections .selectContainer .detailTrackSelect { padding: 0.5em 1.9em 0.5em 0.5em; }
 .emby-select[disabled] { padding: 0em 0.5em !important; }
 .listItemImageButton.itemAction.paper-icon-button-light { background: transparent; color: transparent; }
-
-/*Accent and roundingd*/
-:root {--accent: 98, 121, 205;}
-:root {--rounding: 12px;}
-.css-17c09up.Mui-selected { background-color: rgba(81, 101, 170, 0.2); }
-.css-17c09up.Mui-selected:hover { background-color: rgba(81, 101, 170, 0.7); }
-
-
-:not(.detailImageContainer)>.card:not(.overflowSquareCard) .cardImageContainer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    background-size: cover;
-    transition: .4s
-}
-
-:not(.detailImageContainer)>.card:not(.overflowSquareCard):hover .cardImageContainer::before {
-    transform: scale(1.1)
-}
-
-:not(.detailPageSecondaryContainer)>.card:not(.overflowSquareCard) .cardImageContainer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    background-size: cover;
-    transition: .4s
-}
-
-:not(.detailPageSecondaryContainer)>.card:not(.overflowSquareCard):hover .cardImageContainer::before {
-    transform: scale(1.1)
-
