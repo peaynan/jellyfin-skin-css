@@ -1,34 +1,38 @@
+/* --- 外部样式导入 --- */
+
+/* 核心基础与外观 */
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/fixes.css');
-@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/jf_font.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/base.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/accentlist.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/rounding_circlehover.css');
+@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/hoverglow.css');
+
+/* 布局与组件 */
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/header/header_transparent.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/login/login_frame.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/fields/fields_noborder.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/cornerindicator/indicator_floating.css');
-
-
-@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/type/dark.css');
-@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/titlepage/title_simple-logo.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/progress/floating.css');
 
+/* 字体与页面类型 */
+@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/jf_font.css');
+@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/type/dark.css');
+@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/titlepage/title_simple-logo.css');
 
-@import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/hoverglow.css');
 
+/* --- 自定义样式 --- */
 
-/*
- * EPISODE GRID LAYOUT FIX & COMPACT STYLE
- * Fix: Removed defunct .childrenItemsContainer for grid layout compatibility.
- */
-
-/* 1. 核心网格布局：已修复选择器 */
-.itemsContainer.padded-right.vertical-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; /* 默认 4 列布局 */
+/* 变量定义 */
+:root {
+    --accent: 98, 121, 205;
+    --rounding: 12px;
 }
 
-/* --- 响应式布局调整 --- */
+/* 列表网格布局与响应式 */
+.itemsContainer.padded-right.vertical-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
 @media all and (min-width: 2000px) {
   .listItemImage-large {
@@ -38,48 +42,36 @@
 
 @media all and (max-width: 2000px) {
   .itemsContainer.padded-right.vertical-list {
-    grid-template-columns: 1fr 1fr 1fr; /* 小于 2000px 时 3 列 */
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 @media all and (max-width: 1000px) {
   .itemsContainer.padded-right.vertical-list {
-    grid-template-columns: 1fr 1fr; /* 小于 1000px 时 2 列 */
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-/* 移动布局（强制 1 列） */
-.layout-mobile .itemsContainer.padded-right.vertical-list {
-  grid-template-columns: 1fr;
-}
-
-/* --- General List Item Styling --- */
-
+/* 列表项通用样式 */
 #itemDetailPage .listItem-content {
   border-radius: var(--rounding);
   overflow: hidden;
   transition: background 0.15s ease-in-out;
   flex-flow: column;
-  -webkit-transition: background 0.15s ease-in-out;
-  -moz-transition: background 0.15s ease-in-out;
-  -ms-transition: background 0.15s ease-in-out;
-  -o-transition: background 0.15s ease-in-out;
 }
 
-/* 剧集封面图片样式和悬停效果 */
 .listItemImage.listItemImage-large {
   width: 100%;
   margin: 0;
-  transition: transform 0.3s ease-in-out; /* 添加平滑过渡 */
+  transition: transform 0.15s ease-in-out;
 }
 
-/* 剧集封面悬停放大效果 */
 .listItem:hover .listItemImage.listItemImage-large {
-  transform: scale(1.1); /* 鼠标悬停时放大 5% */
+  transform: scale(1.1);
 }
 
 .listItem-overview.listItemBodyText {
-  height: 5.5em !important; /* 限制简介高度 */
+  height: 5.5em !important;
   font-size: 1em !important;
 }
 
@@ -102,27 +94,76 @@
 .listItem[data-mediatype="Audio"] {
   padding: 0 1em;
   border-radius: var(--rounding) !important;
-  -webkit-border-radius: var(--rounding) !important;
-  -moz-border-radius: var(--rounding) !important;
-  -ms-border-radius: var(--rounding) !important;
-  -o-border-radius: var(--rounding) !important;
 }
 
 .listItemImageButton {
   margin: auto;
   font-size: 1.6em !important;
 }
+
 .listItemBody.itemAction,
 .listItem-bottomoverview.secondary{
   z-index: 1;
 }
+
 .listItem-bottomoverview.secondary{
   text-align: justify;
   padding: .5em;
   margin: 0;
 }
 
-/* --- Mobile Specific Overrides (layout-mobile) --- */
+/* 卡片悬停效果 */
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) {
+    transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
+    z-index: 2;
+    position: relative;
+}
+
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer::before {
+    content: none !important; 
+}
+
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard):hover {
+    transform: scale(1.1);
+}
+
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer {
+    transform: none; 
+}
+
+/* 标签按钮样式 */
+.emby-tab-button.Mui-selected { 
+  background-color: rgba(var(--accent), 0.2); 
+}
+
+.emby-tab-button.Mui-selected:hover { 
+  background-color: rgba(var(--accent), 0.7); 
+}
+
+/* 背景与登录页 */
+.backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(30%);}
+
+#loginPage {
+  display: grid;
+  background: url('/Branding/Splashscreen?format=jpg&foregroundLayer=0.15') !important;
+  background-position: center;
+  background-size: cover;
+}
+.skinHeader.semiTransparent { background-color: unset; }
+.pageTitle { height: 2.5em; }
+.headerTop { padding: 1em 0.5em; }
+#loginPage .padded-left.padded-right.padded-bottom-page { margin-top: auto;}
+#loginPage > .padded-bottom-page { padding-bottom: 0 !important; }
+
+/* 播放器/设置 */
+.trackSelections .selectContainer .detailTrackSelect { padding: 0.5em 1.9em 0.5em 0.5em; }
+.emby-select[disabled] { padding: 0em 0.5em !important; }
+.listItemImageButton.itemAction.paper-icon-button-light { background: transparent; color: transparent; }
+
+/* 移动端样式覆盖 */
+.layout-mobile .itemsContainer.padded-right.vertical-list {
+  grid-template-columns: 1fr;
+}
 
 .layout-mobile .listItemImageButton-icon {
   padding: 0;
@@ -137,7 +178,6 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: -1;
-  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: white;
 }
@@ -188,7 +228,7 @@
   border-radius: var(--rounding) !important;
 }
 
-.layout-mobile  .listItemImageButton:hover {
+.layout-mobile .listItemImageButton:hover {
     transform: scale(1);
 }
 
@@ -204,61 +244,9 @@
 }
 
 .layout-mobile #itemDetailPage .listItem-content {
-  -webkit-backdrop-filter: none;
   backdrop-filter: none;
   align-items: flex-start;
-  background: none !important; /* Combined two rules */
+  background: none !important;
   position: unset;
   color: white;
 }
-
-/* --- Theme & Aesthetic Adjustments --- */
-
-/* Accent and rounding */
-:root {--accent: 98, 121, 205;}
-:root {--rounding: 12px;}
-
-/* FIX FOR UNSTABLE CLASS: Replaced .css-17c09up.Mui-selected with a more generic rule. */
-.emby-tab-button.Mui-selected { 
-  background-color: rgba(var(--accent), 0.2); 
-}
-.emby-tab-button.Mui-selected:hover { 
-  background-color: rgba(var(--accent), 0.7); 
-}
-
-/* Card Hover Effect: Combined identical redundant rules */
-:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    background-size: cover;
-    transition: .4s
-}
-
-:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard):hover .cardImageContainer::before {
-    transform: scale(1.1)
-}
-
-
-/* Style backdrop */
-.backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(30%);}
-
-/* Login background */
-#loginPage {
-  display: grid;
-  background: url('/Branding/Splashscreen?format=jpg&foregroundLayer=0.15') !important;
-  background-position: center;
-  background-size: cover;
-}
-.skinHeader.semiTransparent { background-color: unset; }
-.pageTitle { height: 2.5em; }
-.headerTop { padding: 1em 0.5em; }
-#loginPage .padded-left.padded-right.padded-bottom-page { margin-top: auto;}
-#loginPage > .padded-bottom-page { padding-bottom: 0 !important; }
-.trackSelections .selectContainer .detailTrackSelect { padding: 0.5em 1.9em 0.5em 0.5em; }
-.emby-select[disabled] { padding: 0em 0.5em !important; }
-.listItemImageButton.itemAction.paper-icon-button-light { background: transparent; color: transparent; }
