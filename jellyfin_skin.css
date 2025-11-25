@@ -1,43 +1,51 @@
-/* --- 外部样式导入 --- */
+/* =========================================================================
+   # 1. 外部样式导入 (External Imports)
+   ========================================================================= */
 
-/* 核心基础与外观 */
+/* --- 核心基础与外观 --- */
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/fixes.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/base.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/accentlist.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/rounding_circlehover.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/hoverglow.css');
 
-/* 布局与组件 */
+/* --- 布局与组件 --- */
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/header/header_transparent.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/login/login_frame.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/fields/fields_noborder.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/cornerindicator/indicator_floating.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/progress/floating.css');
 
-/* 字体与页面类型 */
+/* --- 字体与页面类型 --- */
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/jf_font.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/type/dark.css');
 @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/titlepage/title_simple-logo.css');
 
 
-/* --- 自定义样式 --- */
+/* =========================================================================
+   # 2. 自定义变量 (Custom Variables)
+   ========================================================================= */
 
-/* 变量定义 */
 :root {
     --accent: 98, 121, 205;
     --rounding: 12px;
+    --hover-scale-factor: 1.04;
 }
 
-/* 列表网格布局与响应式 */
+
+/* =========================================================================
+   # 3. 列表/卡片布局与悬停效果 (List/Card Layout & Hover)
+   ========================================================================= */
+
+/* --- 列表网格布局与响应式 --- */
 .itemsContainer.padded-right.vertical-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
+/* 响应式调整 */
 @media all and (min-width: 2000px) {
-  .listItemImage-large {
-    height: 9.5vw;
-  }
+  .listItemImage-large { height: 9.5vw; }
 }
 
 @media all and (max-width: 2000px) {
@@ -52,7 +60,7 @@
   }
 }
 
-/* 列表项通用样式 */
+/* --- 列表项 (listItem) 样式与悬停 --- */
 #itemDetailPage .listItem-content {
   border-radius: var(--rounding);
   overflow: hidden;
@@ -60,193 +68,115 @@
   flex-flow: column;
 }
 
-.listItemImage.listItemImage-large {
-  width: 100%;
-  margin: 0;
-  transition: transform 0.15s ease-in-out;
-}
-
-.listItem:hover .listItemImage.listItemImage-large {
-  transform: scale(1.1);
-}
-
-.listItem-overview.listItemBodyText {
-  height: 5.5em !important;
-  font-size: 1em !important;
-}
-
 #itemDetailPage .listItem {
-  position: relative;
-  height: fit-content;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-  border-radius: var(--rounding);
-  padding: .5em;
+  position: relative; height: fit-content; height: -webkit-fit-content; height: -moz-fit-content;
+  overflow: hidden; margin-bottom: 1.5rem; border-radius: var(--rounding); padding: .5em; z-index: 1;
+  will-change: transform, box-shadow;
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-#itemDetailPage .secondary.listItem-overview.listItemBodyText {
-  height: 100%;
-  margin: 0;
+/* 列表项悬停效果 */
+#itemDetailPage .listItem:hover {
+    transform: scale(var(--hover-scale-factor));
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 2;
 }
 
-.listItem[data-mediatype="Audio"] {
-  padding: 0 1em;
-  border-radius: var(--rounding) !important;
-}
+/* 列表图片和文本调整 */
+.listItemImage.listItemImage-large { width: 100%; margin: 0; }
+.listItem-overview.listItemBodyText { height: 5.5em !important; font-size: 1em !important; }
+#itemDetailPage .secondary.listItem-overview.listItemBodyText { height: 100%; margin: 0; }
+.listItem[data-mediatype="Audio"] { padding: 0 1em; border-radius: var(--rounding) !important; }
+.listItemImageButton { margin: auto; font-size: 1.6em !important; }
+.listItemBody.itemAction, .listItem-bottomoverview.secondary{ z-index: 1; }
+.listItem-bottomoverview.secondary{ text-align: justify; padding: .5em; margin: 0; }
 
-.listItemImageButton {
-  margin: auto;
-  font-size: 1.6em !important;
-}
-
-.listItemBody.itemAction,
-.listItem-bottomoverview.secondary{
-  z-index: 1;
-}
-
-.listItem-bottomoverview.secondary{
-  text-align: justify;
-  padding: .5em;
-  margin: 0;
-}
-
-/* 卡片悬停效果 */
+/* --- 通用卡片 (Card) 悬停效果 --- */
 :not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) {
     transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
     z-index: 2;
     position: relative;
 }
 
-:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer::before {
-    content: none !important; 
-}
-
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer::before { content: none !important; }
 :not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard):hover {
-    transform: scale(1.1);
+    transform: scale(var(--hover-scale-factor));
 }
+:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer { transform: none; }
 
-:not(.detailImageContainer):not(.detailPageSecondaryContainer) > .card:not(.overflowSquareCard) .cardImageContainer {
-    transform: none; 
-}
 
-/* 标签按钮样式 */
-.emby-tab-button.Mui-selected { 
-  background-color: rgba(var(--accent), 0.2); 
-}
+/* =========================================================================
+   # 4. 界面元素 (UI Components)
+   ========================================================================= */
 
-.emby-tab-button.Mui-selected:hover { 
-  background-color: rgba(var(--accent), 0.7); 
-}
+/* --- 标签按钮 --- */
+.emby-tab-button.Mui-selected { background-color: rgba(var(--accent), 0.2); }
+.emby-tab-button.Mui-selected:hover { background-color: rgba(var(--accent), 0.7); }
 
-/* 背景与登录页 */
+/* --- 登录页与背景 --- */
 .backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(30%);}
-
 #loginPage {
   display: grid;
   background: url('/Branding/Splashscreen?format=jpg&foregroundLayer=0.15') !important;
   background-position: center;
   background-size: cover;
 }
-.skinHeader.semiTransparent { background-color: unset; }
-.pageTitle { height: 2.5em; }
-.headerTop { padding: 1em 0.5em; }
+
+/* 登录页定位 */
 #loginPage .padded-left.padded-right.padded-bottom-page { margin-top: auto;}
 #loginPage > .padded-bottom-page { padding-bottom: 0 !important; }
 
-/* 播放器/设置 */
+/* --- 头部 --- */
+.skinHeader.semiTransparent { background-color: unset; }
+.pageTitle { height: 2.5em; }
+.headerTop { padding: 1em 0.5em; }
+
+/* --- 播放器/设置 --- */
 .trackSelections .selectContainer .detailTrackSelect { padding: 0.5em 1.9em 0.5em 0.5em; }
 .emby-select[disabled] { padding: 0em 0.5em !important; }
 .listItemImageButton.itemAction.paper-icon-button-light { background: transparent; color: transparent; }
 
-/* 移动端样式覆盖 */
+
+/* =========================================================================
+   # 5. 移动端适配与覆盖 (Mobile Overrides)
+   ========================================================================= */
+
+/* 移动端列表单列布局 */
 .layout-mobile .itemsContainer.padded-right.vertical-list {
   grid-template-columns: 1fr;
 }
 
-.layout-mobile .listItemImageButton-icon {
-  padding: 0;
-  top: 0.34em;
-  position: absolute !important;
-  font-size: 1.5em !important;
-  right: 3em;
-}
-
+/* 移动端列表按钮与图片 */
+.layout-mobile .listItemImageButton-icon { padding: 0; top: 0.34em; position: absolute !important; font-size: 1.5em !important; right: 3em; }
 .layout-mobile #itemDetailPage .listItemImageButton {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-  backdrop-filter: blur(4px);
-  color: white;
+  width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: -1; backdrop-filter: blur(4px); color: white;
 }
-
-.layout-mobile .listItemIndicators {
-  right: 0;
-  top: 0;
-  z-index: 0;
-}
-
-.layout-mobile .playedIndicator {
-  width: 2em;
-  height: 2em;
-  font-size: 1.2rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  box-shadow: none;
-}
-
-.layout-mobile .listItemIndicators .indicatorIcon.check {
-  z-index: 2;
-}
-
-.layout-mobile .listItemBodyText {
-  max-width: 36vw;
-}
-
-@media all and (min-width: 50em) {
-  .layout-mobile .listItemBodyText {
-    max-width: 100%;
-  }
-}
-
-.layout-mobile .listItem .playedIndicator {
-  background: transparent !important;
-  color: rgba(var(--accent));
-}
-
 .layout-mobile .listItemImage {
-  height: 100% !important;
-  width: 100% !important;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  overflow: hidden;
-  border-radius: var(--rounding) !important;
+  height: 100% !important; width: 100% !important; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%); overflow: hidden; border-radius: var(--rounding) !important;
 }
 
-.layout-mobile .listItemImageButton:hover {
-    transform: scale(1);
+/* 移动端指示器和按钮定位 */
+.layout-mobile .listItemIndicators { right: 0; top: 0; z-index: 0; }
+.layout-mobile .playedIndicator {
+  width: 2em; height: 2em; font-size: 1.2rem; position: absolute; top: 0; right: 0; box-shadow: none;
+}
+.layout-mobile .listItemIndicators .indicatorIcon.check { z-index: 2; }
+.layout-mobile .listItem .playedIndicator { background: transparent !important; color: rgba(var(--accent)); }
+.layout-mobile .listViewUserDataButtons { position: absolute; right: 0; top: 1.25em; padding-right: 1em; }
+.layout-mobile .listItemButton { padding: 0 0.556em !important; }
+
+/* 移动端文本宽度 */
+.layout-mobile .listItemBodyText { max-width: 36vw; }
+@media all and (min-width: 50em) {
+  .layout-mobile .listItemBodyText { max-width: 100%; }
 }
 
-.layout-mobile .listViewUserDataButtons {
-  position: absolute;
-  right: 0;
-  top: 1.25em;
-  padding-right: 1em;
-}
+/* 禁用移动端悬停放大效果 */
+.layout-mobile .listItemImageButton:hover { transform: scale(1); }
+.layout-mobile #itemDetailPage .listItem:hover { transform: scale(1); box-shadow: none; }
 
-.layout-mobile .listItemButton {
-  padding: 0 0.556em !important;
-}
-
+/* 移动端列表内容框 */
 .layout-mobile #itemDetailPage .listItem-content {
-  backdrop-filter: none;
-  align-items: flex-start;
-  background: none !important;
-  position: unset;
-  color: white;
+  backdrop-filter: none; align-items: flex-start; background: none !important; position: unset; color: white;
 }
